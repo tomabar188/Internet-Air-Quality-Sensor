@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>PMS5003-sensor</title>
+    <style type="text/css">
+html {
+   
+    height: 100%;
+    font-family:Arial, sans-serif;
+    text-shadow: 4px 4px 6px rgba(66, 68, 90, 1);
+    
+    
+}
+    body {
+    
+    height: 100%;
+    background-color: white;
+	width: 100%;
+	margin-left: 0px;
+	margin-top: 0px;
+
+    position: relative;
+
+    }
+    
+    header {
+      width: 100%;
+      text-align: center;
+      background-color: #30E3CA;
+      color: white;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      
+    }
+    
+
+    nav {
+      width: 100%;
+      
+      background-color: #11999E;
+
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      
+      background-color: #11999E;
+    }
+    nav li {
+      display: inline-block;
+    }
+    nav li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 20px 120px;
+      text-decoration: none;
+    }
+   nav li a:hover {
+      background-color: #0cb4b9;
+    }
+    footer {
+      width: 100%;
+      text-align: center;
+      background-color: #40514E;
+      color: white;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      position: absolute;
+      
+    }
+       .TabMenuContainer{
+        display: flex;
+        justify-content: space-between;
+        align-items: left;
+        height: 100%;
+        
+      }
+    .table-data{
+      width: 100%;
+      height: 100%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .table-data table{
+      width: 100%;
+      height: 100%;
+      text-shadow: 0px 0px 0px;
+      text-align: center;
+      padding: 2px,3px;
+    }
+    
+      .searching {
+        
+        border-right: 2px solid;
+        border-bottom: 2px solid;
+        border-color: #4b8d8f;
+        width: 20%; 
+        display: flex; /* Ustawia elementy wewnątrz kontenera na elastyczne */
+        flex-direction: column; /* Ustawia elementy wewnątrz kontenera w kolumnie, jeden pod drugim */
+        text-align: center;
+        background-color: #E4F9F5;
+        height: 40%;
+        
+      }
+
+      .searching p {
+        
+        margin-top: 0px;
+      }
+      .searching input {
+        
+        margin-bottom: 10px;
+      }
+      
+      
+
+      .TabMenuContainer p {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 100%;
+     color: rgb(255, 255, 255);
+     font-weight: bold;
+     text-transform: uppercase;
+     background-color: #4b8d8f;
+    }
+
+   
+    
+    </style>
+    
+</head>
+
+<body>
+    <header>
+        <h1>WYNIKI POMIARÓW </h1>
+      </header>
+    
+      <nav>
+    <ul>
+        <li><a href="/">Strona główna</a></li>
+        <li><a href="all">Wszystkie odczyty</a></li>
+        <li><a href="datalist">Lista pomiarów</a></li>
+      
+      
+    </ul>
+  </nav>
+        
+    
+
+        <div class="TabMenuContainer">
+
+
+        <div class="searching">
+      <form action="/datalist-search" method="GET">
+        
+        <div >
+            <p>data</p>
+        <input type="date"  id="min_date" name="DateMin">
+        <input type="date"  id="max_date" name="DateMax">
+        </div>
+        <div>
+            <p >czas</p>
+        <input type="time"  id="min_time" name="TimeMin" step="any">
+        <input type="time"  id="max_time" name="TimeMax" step="any">
+        </div>
+        <div>
+        <input type="submit" value="Szukaj">
+        </div>
+        <div>
+          <p >Zapisz</p>
+          <input type="button" value="Zapisz jako PDF" onclick="PDF()" />
+        </div>
+    </form>
+    </div>
+
+    
+        
+    <div class="table-data" id="tab_data">
+      <table border="5">
+      <tr>
+          <th>ID</th>
+          <th>Data</th>
+          <th>Godzina</th>
+          <th>PM10</th>
+          <th>PM2.5</th>
+      </tr>
+      
+      <% for(var i=0; i<rows.length; i++) {%>                             
+      <tr>
+          <td><%=rows[i].Id_pm10; %></td>
+          <td><%=rows[i].DateFormat %></td>
+          <td><%=rows[i].Time_pm10 %></td>
+          <td><%=rows[i].Value_pm10 %></td>
+          <td><%=rows[i].Value_pm25 %></td>
+      </tr>
+      <%  } %>
+     
+         
+  </table>
+    </div>      
+    </div>
+    
+
+      
+      
+    <script>
+
+      function PDF() {
+        
+        var body = document.getElementById('tab_data').innerHTML;
+        var PDF = window.open('', '', 'height=800,width=1000');
+  
+        PDF.document.write('<html><head><title>PMS5003_');
+        PDF.document.write(<%=rows[0].Id_pm10%>);
+        PDF.document.write('-');
+        PDF.document.write(<%=rows[rows.length-1].Id_pm10%>);
+        PDF.document.write('</title><style>table {width: 80%;text-align: center;margin-right: auto;margin-left: auto;}</style></head><body>');
+        PDF.document.write(body);
+        PDF.document.write('</body></html>');
+        PDF.document.close();
+        PDF.print();
+      }
+
+
+  </script>
+
+  <script>
+    var date = new Date();
+    var nowDate = date.toISOString().substring(0,10);
+
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    if(urlParams.get('DateMin')==null){
+      document.getElementById('min_date').value = nowDate;
+      document.getElementById('max_date').value = nowDate;
+      document.getElementById('min_time').value = "00:00:01";
+      document.getElementById('max_time').value = "23:59:59";
+    }
+    else{
+      document.getElementById('min_date').value = urlParams.get('DateMin');
+      document.getElementById('max_date').value = urlParams.get('DateMax');
+      document.getElementById('min_time').value = urlParams.get('TimeMin');
+      document.getElementById('max_time').value = urlParams.get('TimeMax');
+    }
+
+  </script>
+   
+</body>
+
+</html>

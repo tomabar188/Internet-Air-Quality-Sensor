@@ -1,0 +1,1 @@
+idf_component_register(SRCS "ledmatrix7219.c" INCLUDE_DIRS ".")

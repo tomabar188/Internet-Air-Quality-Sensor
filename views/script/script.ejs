@@ -1,0 +1,101 @@
+<script>
+var date = new Date();  
+var nowDate = date.toISOString().substring(0,10); // aktualny dzień - dzień.miesiąc.rok
+
+
+const urlParams = new URLSearchParams(window.location.search); //pobranie parametrów z URL
+
+if(urlParams.get('DateMin')==null){ //jeśli użytkownik nie użył funkcji "szukaj" 
+document.getElementById('min_date').value = nowDate;  //w oknie wyboru daty wyświetloną wartością domyślną, będzie aktualny dzień
+document.getElementById('max_date').value = nowDate;
+document.getElementById('min_time').value = "00:00"; //w oknie wyboru czasu wyświetlony zostanie przedział od 00:00:01 - 23:59:59 
+document.getElementById('max_time').value = "23:59";
+}
+else{ // w przypadku którym użytkownik wyszukał przedział data || czas wyświetlone zostaną parametry tego wyszukiwania
+document.getElementById('min_date').value = urlParams.get('DateMin');
+document.getElementById('max_date').value = urlParams.get('DateMax');
+document.getElementById('min_time').value = urlParams.get('TimeMin');
+document.getElementById('max_time').value = urlParams.get('TimeMax');
+}
+
+
+
+let iden = []; //tabela pomocnicza do której zapisywane będą wartości osi X
+let val_pm10 = []; //tabela pomocnicza do której zapisywane będą wartości odczytu pomiarów pm 10 (oś y)
+let val_pm25 = []; //tabela pomocnicza do której zapisywane będą wartości odczytu pomiarów pm 2.5 (oś y)
+
+
+<% for(var i=0; i<rows.length; i++) {%> //pętla, która wykona się n razy, gdzie n = ilość otrzymanych rekordów z bazy danych MySQL
+    
+    iden.push('<%=(rows[i].Date_pm10.getMonth()+1)%>-<%=rows[i].Date_pm10.getDate()%> '+' <%= rows[i].Time %>') //przypisanie wartości osi x dla poszczególnego rekordu, w odpowiednim formacie
+    val_pm10.push(<%= rows[i].Value_pm10 %>) //przypisanie wartości PM 10 rekordu 
+    val_pm25.push(<%= rows[i].Value_pm25 %>) //przypisanie wartości PM 2.5 rekordu
+   
+   
+<%  } %>
+
+
+
+  if(window.location.pathname=="/"){//jeśli otworzona została strona główna
+    setTimeout(function(){ //strona odświeży się po określonym czasie
+   window.location.reload(1);
+    }, 240000);
+
+    iden.reverse(); //ze względu na zapytanie get, należy odwrócić wszystkie tabele dla zachowania spójności strony (od lewej do prawej)
+    val_pm10.reverse();
+    val_pm25.reverse();
+
+  }
+  else{
+    document.getElementById("measurement").style.display = "none";
+  } 
+
+
+  
+
+   
+
+const data = { 
+    labels: iden, //zawartość tabeli przypisana zostaje osi X
+            datasets: [{
+            label: 'PM 10', //nazwa zbioru wartości
+            data: val_pm10, //wartość tabeli z pomiarami PM 10 przypisana zostaje osi Y
+            backgroundColor: 'rgba(76, 103, 147, 1)', //kolor tła
+            borderColor: 'rgba(76, 103, 147, 1)', //kolor obramowania
+            borderWidth: 1 //szerokość obramowania
+        },
+        {
+            label: 'PM 2.5',//nazwa zbioru wartości
+            data: val_pm25,  //wartość tabeli z pomiarami PM 2.5 przypisana zostaje osi Y
+            backgroundColor: 'rgba(92, 46, 126, 1)',//kolor tła
+            borderColor: 'rgba(92, 46, 126, 1)',//kolor obramowania
+            borderWidth: 1 //szerokość obramowania
+        }
+    ],
+        
+}
+
+const config ={
+  type: 'line', //typ wykresu - liniowy
+    data, //przypisanie danych do wykresu
+    options: {
+        responsive: true, //responsywność włączona w celu prawidłowego wyświetlania się na stronie
+        interaction: { //wyswietlanie dwóch wartości podczas najechanie na punkt
+        mode: 'index',
+        },
+        animation: false, //wyłączenie animacji pojawiającego się wykresu
+        scales: {
+            y: {
+                beginAtZero: true,
+                title:{
+                    display: true,
+                    text:'µg/m3'
+                }
+               }
+        }
+    }
+}
+
+const MainChart = new Chart(document.getElementById('MainChart'),config); //obiekt wykresu, przypisany zostaje obszarowi
+
+</script>

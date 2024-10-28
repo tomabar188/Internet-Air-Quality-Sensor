@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>PMS5003-sensor</title>
+    <%- include('./style/style.ejs'); %>
+</head>
+
+<body>
+      <header>
+        <h1>WYNIKI POMIARÓW </h1>
+      </header>
+    
+      <nav>
+        <ul>
+          <li><a href="/">Ostatnie 24-godziny</a></li>
+          <li><a href="all">Wszystkie odczyty</a></li>
+          <li><a href="datalist">Lista pomiarów</a></li> 
+        </ul>
+      </nav>
+        
+    
+
+      <div class="TabMenuContainer">
+        <div class="searching">
+          <form action="/search" method="GET">
+                <div >
+                  <p>data</p>
+                  <input type="date"  id="min_date" name="DateMin">
+                  <input type="date"  id="max_date" name="DateMax">
+                </div>
+                <div>
+                  <p >czas</p>
+                  <input type="time"  id="min_time" name="TimeMin" step="any">
+                  <input type="time"  id="max_time" name="TimeMax" step="any">
+                </div>
+                <div>
+                  <input type="submit" value="Szukaj">
+                </div>
+            </form>
+        </div>
+        <div class="chartDiv" >
+          <canvas id="MainChart"></canvas>
+          <div id="measurement">
+          <h3>Najnowszy odczyt (<%= rows[0].Time %>): </h3>
+          <h4>
+            PM10: <%= rows[0].Value_pm10 %> PM2.5: <%= rows[0].Value_pm25 %>
+                    
+          </h4>
+        </div>
+        </div>    
+      </div>
+    
+    
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/luxon@3.1.0/build/global/luxon.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.3.0/dist/chartjs-adapter-luxon.umd.min.js"></script>
+      <script>// src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@2.0.0/dist/chartjs-plugin-streaming.min.js"></script>
+      <%- include('./script/script.ejs'); %>
+
+    
+<footer></footer>
+</body>
+
+</html>

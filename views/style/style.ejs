@@ -1,0 +1,120 @@
+<style>
+
+html { /* Dla wszystkich elementów znajdujących się na stronie*/
+   
+    height: 100%; 
+    font-family:Arial, sans-serif;
+    text-shadow: 4px 4px 6px rgba(66, 68, 90, 1);
+    
+    
+}
+    body { /* Dla elementów znajdujących się w body*/
+    
+    height: 100%;
+    background-color: white;
+	width: 100%;
+	margin-left: 0px;
+	margin-top: 0px;
+
+    position: relative;
+
+    }
+    
+    header { /* Dla nagłówka*/
+      width: 100%;
+      text-align: center;
+      background-color: #30E3CA;
+      color: white;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      
+    }
+    
+
+    nav { /* dla paska wyboru*/
+      width: 100%;
+      background-color: #11999E;
+
+      text-align: center;
+    }
+    nav ul { /* dla wiersza w pasku wyboru*/ 
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: #11999E;
+    }
+    nav li { /* dla kolumn w pasku wyboru*/ 
+      display: inline-block;
+    }
+    nav li a { /* dla odnośników w pasku wyboru*/ 
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 20px 120px;
+      text-decoration: none;
+    }
+   nav li a:hover { /* dla odnośników w pasku wyboru po najechaniu na nie*/
+      background-color: #0cb4b9;
+    }
+    footer { /* dla stopki*/
+      width: 100%;
+      
+      text-align: center;
+      background-color: #40514E;
+      color: white;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      position: absolute;
+      
+    }
+       .TabMenuContainer{ /* dla głównej przestrzeni, gdzie zostanie wyświetlone menu i wykres*/
+        display: flex;
+        justify-content: space-between;
+        align-items: left;
+        height: 90%;
+        
+      }
+      .searching { /* dla menu wyszukiwarki */
+        border-right: 2px solid;
+        border-color: #4b8d8f;
+        width: 20%; 
+        display: flex; /* Ustawia elementy wewnątrz kontenera na elastyczne */
+        flex-direction: column; /* Ustawia elementy wewnątrz kontenera w kolumnie, jeden pod drugim */
+        text-align: center;
+        background-color: #E4F9F5;
+        height: 100%;
+        
+      }
+
+      .searching p { /* dla akapitów w wyszukiwarce*/
+        
+        margin-top: 0px;
+      }
+      .searching input { /* dla pól wyboru i przycisku wyszukiwania*/
+        
+        margin-bottom: 10px;
+      }
+      .chartDiv{ /* dla obszaru na którym zostanie wyświetlony wykres*/
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        
+      }
+      h3, h4{
+        color:#3c3f3f;
+        padding-right: 20%;
+        text-shadow: 0px 0px 0px;
+      }
+
+      .TabMenuContainer p { /* dla akapitów w obszarze wyszukiwarki i wykresu*/
+    padding-top: 5px;
+    padding-bottom: 5px;
+     color: rgb(255, 255, 255);
+     font-weight: bold;
+     text-transform: uppercase;
+     background-color: #4b8d8f;
+    }
+    </style>
